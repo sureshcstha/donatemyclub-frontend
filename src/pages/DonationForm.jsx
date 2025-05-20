@@ -36,6 +36,7 @@ const DonationForm = () => {
     const stripe = useStripe();
     const elements = useElements();
     const [message, setMessage] = useState('');
+    const [messageType, setMessageType] = useState(''); // 'success' or 'error'
     const [loading, setLoading] = useState(false);
 
     const handleChange = (e) => {
@@ -57,7 +58,15 @@ const DonationForm = () => {
                 body: JSON.stringify(formData),
             });
 
-            const { clientSecret } = await res.json();
+            const responseBody = await res.json();
+
+            if (!res.ok) {
+                setMessage(responseBody.error || 'Something went wrong. Please try again.');
+                setMessageType('error');
+                return;
+            }
+
+            const { clientSecret } = responseBody;
 
             const result = await stripe.confirmCardPayment(clientSecret, {
                 payment_method: {
@@ -74,6 +83,7 @@ const DonationForm = () => {
             } else if (result.paymentIntent.status === 'succeeded') {
                 setMessage('Donation successful! Thank you.');
                 setFormData({ amount: '', donorFirstName: '', donorLastName: '', donorEmail: '' });
+                setMessageType('success');
 
                 // Clear Stripe fields
                 elements.getElement(CardNumberElement)?.clear();
@@ -191,7 +201,15 @@ const DonationForm = () => {
                 {loading ? 'Processing...' : 'Donate'}
             </button>
 
-            {message && <div className="mt-2 text-center text-green-600">{message}</div>}
+            {message && (
+                <div
+                    className={`mt-2 text-center ${
+                    messageType === 'success' ? 'text-green-600' : 'text-red-600'
+                    }`}
+                >
+                    {message}
+                </div>
+            )}
             </form>
         </div>
     );
