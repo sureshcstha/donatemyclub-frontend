@@ -7,6 +7,7 @@ const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
 const Home = () => {
   const [clubs, setClubs] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -15,8 +16,10 @@ const Home = () => {
         const response = await fetch(`${API_BASE_URL}/api/clubs`); 
         const data = await response.json();
         setClubs(data);
+        setError(null);
       } catch (err) {
         console.error('Error fetching clubs:', err);
+        setError('Unable to load clubs. Please try again later.');
       } finally {
         setLoading(false);
       }
@@ -34,6 +37,12 @@ const Home = () => {
   };
 
   if (loading) return <div className="p-4 text-center">Loading clubs...</div>;
+
+  if (error) return (
+    <div className="p-4 text-center text-red-600">
+      {error}
+    </div>
+  );
 
   return (
     <div className="flex flex-wrap justify-center gap-6 p-6">
