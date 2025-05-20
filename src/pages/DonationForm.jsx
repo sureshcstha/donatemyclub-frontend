@@ -6,7 +6,7 @@ import {
   useStripe,
   useElements,
 } from '@stripe/react-stripe-js';
-import { useParams } from 'react-router-dom';
+import { useParams, Link } from 'react-router-dom';
 
 const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
 const ELEMENT_OPTIONS = {
@@ -153,7 +153,9 @@ const DonationForm = () => {
                 className="w-full p-2 border rounded"
                 required
             />
-
+            <Link to="/test-cards" className="text-blue-600 underline hover:text-blue-800">
+                How to use test cards →
+            </Link>
             <label className="block text-base font-medium text-gray-700">
                 Card Number <span className="text-red-500">*</span>
             </label>

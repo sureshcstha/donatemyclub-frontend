@@ -49,14 +49,14 @@ const AboutClub = () => {
       <h1 className="text-4xl font-bold mb-4">{club.name}</h1>
       <p className="mb-4 text-gray-700">{club.description}</p>
 
-      {club.details && (
-        <div className="mt-6">
-          <h2 className="text-2xl font-semibold mb-2">More About Us</h2>
-          <p className="text-gray-600">{club.details}</p>
-        </div>
-      )}
+      <Link
+        to={`/donate/${clubId}`}
+        className="inline-block mb-4 bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700 transition"
+      >
+        Donate
+      </Link>
 
-    <div className="mt-10">
+    <div className="mt-4">
         <h2 className="text-2xl font-semibold mb-4">Donation Summary</h2>
         {donationLoading ? (
           <div>Loading donations...</div>
