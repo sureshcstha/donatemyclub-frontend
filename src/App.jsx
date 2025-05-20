@@ -3,7 +3,8 @@ import Home from './pages/Home';
 import Navbar from './components/Navbar';
 import DonationForm from './pages/DonationForm';
 import AboutClub from './pages/AboutClub';
-import TestCardInfo from './pages/TestCardInfo'; 
+import TestCardInfo from './pages/TestCardInfo';
+import NotFound from "./pages/NotFound"; 
 
 function App() {
   return (
@@ -16,6 +17,7 @@ function App() {
             <Route path="/donate/:clubId" element={<DonationForm />} />
             <Route path="/about/:clubId" element={<AboutClub />} />
             <Route path="/test-cards" element={<TestCardInfo />} />
+            <Route path="*" element={<NotFound />} />
           </Routes>
         </div>
       </div>
