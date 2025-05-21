@@ -106,7 +106,7 @@ const DonationForm = () => {
     };
 
     return (
-        <div className="max-w-md mx-auto">
+        <div className="max-w-md mx-auto py-6 px-1">
             <h1 className="text-2xl font-bold text-center mb-4">
                 Donate to {formatClubName(clubId) || '...'}
             </h1>

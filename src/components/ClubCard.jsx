@@ -1,6 +1,6 @@
 const ClubCard = ({ title, description, onDonateClick, onLearnMoreClick }) => {
   return (
-    <div className="bg-white shadow-lg rounded-xl p-6 max-w-md w-full">
+    <div className="bg-white shadow-[0_0_20px_rgba(0,0,0,0.1)] rounded-xl p-6 max-w-md w-full">
       <h2 className="text-2xl font-bold mb-2 text-gray-800">{title}</h2>
       <p className="text-gray-600 mb-4">{description}</p>
       <div className="flex gap-4">

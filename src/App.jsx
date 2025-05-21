@@ -11,7 +11,7 @@ function App() {
     <Router>
       <div className="flex flex-col h-screen">
         <Navbar />
-        <div className="flex-grow bg-background py-12 px-4">
+        <div className="flex-grow bg-background py-2 px-4">
           <Routes>
             <Route path="/" element={<Home />} />
             <Route path="/donate/:clubId" element={<DonationForm />} />

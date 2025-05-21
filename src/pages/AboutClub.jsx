@@ -45,7 +45,7 @@ const AboutClub = () => {
   if (!club) return <div className="p-4 text-center">Club not found.</div>;
 
   return (
-    <div className="max-w-3xl mx-auto p-6">
+    <div className="max-w-3xl mx-auto py-6 px-1">
       <h1 className="text-4xl font-bold mb-4">{club.name}</h1>
       <p className="mb-4 text-gray-700">{club.description}</p>
 
