@@ -37,6 +37,14 @@ const columns = [
   },
 ];
 
+const customStyles = {
+  headCells: {
+    style: {
+      fontWeight: 'bold',
+    },
+  },
+};
+
 const AboutClub = () => {
   const { clubId } = useParams();
   const [club, setClub] = useState(null);
@@ -105,6 +113,7 @@ const AboutClub = () => {
         highlightOnHover
         striped
         dense
+        customStyles={customStyles}
       />
 
       <Link to="/" className="inline-block mt-8 text-blue-600 underline hover:text-blue-800">
