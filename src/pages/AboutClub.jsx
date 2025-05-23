@@ -1,15 +1,49 @@
 import { useEffect, useState } from 'react';
 import { useParams, Link } from 'react-router-dom';
+import DataTable from 'react-data-table-component';
 
 const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
+
+const columns = [
+  {
+    name: 'First Name',
+    selector: row => row.donorFirstName,
+    sortable: true,
+  },
+  {
+    name: 'Last Name',
+    selector: row => row.donorLastName,
+    sortable: true,
+  },
+  {
+    name: 'Amount',
+    selector: row => row.amount,
+    format: row => `$${row.amount.toFixed(2)}`,
+    sortable: true,
+  },
+  {
+    name: 'Date',
+    selector: row => new Date(row.date),
+    format: row =>
+      new Date(row.date).toLocaleDateString('en-US', {
+        year: 'numeric',
+        month: 'short',
+        day: 'numeric',
+        hour: 'numeric',
+        minute: 'numeric',
+        hour12: true,
+      }),
+    sortable: true,
+  },
+];
 
 const AboutClub = () => {
   const { clubId } = useParams();
   const [club, setClub] = useState(null);
   const [loading, setLoading] = useState(true);
   const [donations, setDonations] = useState([]);
-  const [donationLoading, setDonationLoading] = useState(true);
   const [totalAmount, setTotalAmount] = useState(0);
+  const [donationCount, setDonationCount] = useState(0);
 
   useEffect(() => {
     const fetchClubDetails = async () => {
@@ -30,10 +64,9 @@ const AboutClub = () => {
         const data = await res.json();
         setDonations(data.donations || []);
         setTotalAmount(data.totalAmount || 0);
+        setDonationCount(data.donationCount || 0);
       } catch (err) {
         console.error('Error fetching donations:', err);
-      } finally {
-        setDonationLoading(false);
       }
     };
 
@@ -56,47 +89,23 @@ const AboutClub = () => {
         Donate
       </Link>
 
-    <div className="mt-4">
-        <h2 className="text-2xl font-semibold mb-4">Donation Summary</h2>
-        {donationLoading ? (
-          <div>Loading donations...</div>
-        ) : donations.length === 0 ? (
-          <div>No donations yet.</div>
-        ) : (
-          <>
-            <p className="mb-4 text-gray-700">Total Raised: <strong>${totalAmount}</strong></p>
-            <table className="w-full border-collapse border border-gray-300 text-sm">
-              <thead className="bg-gray-100">
-                <tr>
-                  <th className="border px-4 py-2 text-left">Donor Name</th>
-                  <th className="border px-4 py-2 text-left">Amount</th>
-                  <th className="border px-4 py-2 text-left">Date</th>
-                </tr>
-              </thead>
-              <tbody>
-                {donations.map((donation) => (
-                  <tr key={donation._id}>
-                    <td className="border px-4 py-2">
-                      {donation.donorFirstName} {donation.donorLastName}
-                    </td>
-                    <td className="border px-4 py-2">${donation.amount}</td>
-                    <td className="border px-4 py-2">
-                        {new Date(donation.date).toLocaleDateString('en-US', {
-                            year: 'numeric',
-                            month: 'short',
-                            day: 'numeric',
-                            hour: 'numeric',
-                            minute: 'numeric',
-                            hour12: true,
-                        })}
-                    </td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
-          </>
-        )}
+      <div className="mt-4">
+        <h2 className="text-xl font-semibold mb-1">Donation Summary</h2>
+        <p className="mb-1 text-gray-700">Total Donations: <strong>{donationCount}</strong></p>
+        <p className="mb-4 text-gray-700">Total Raised: <strong>${totalAmount}</strong></p>
       </div>
+
+      <DataTable
+        keyField="_id"
+        columns={columns}
+        data={donations}
+        pagination
+        paginationPerPage={10}
+        paginationRowsPerPageOptions={[10, 25, 50, 100]}
+        highlightOnHover
+        striped
+        dense
+      />
 
       <Link to="/" className="inline-block mt-8 text-blue-600 underline hover:text-blue-800">
         ← Back to Home
