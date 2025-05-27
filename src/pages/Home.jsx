@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import ClubCard from '../components/ClubCard';
 
 const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
+const API_KEY = import.meta.env.VITE_API_KEY;
 
 const Home = () => {
   const [clubs, setClubs] = useState([]);
@@ -19,7 +20,11 @@ const Home = () => {
           ? `${API_BASE_URL}/api/clubs/search?query=${encodeURIComponent(query)}`
           : `${API_BASE_URL}/api/clubs`;
 
-        const response = await fetch(endpoint);
+        const response = await fetch(endpoint, {
+          headers: {
+            'Authorization': `Bearer ${API_KEY}`,
+          },
+        });
         const data = await response.json();
         setClubs(data);
         setError(null);

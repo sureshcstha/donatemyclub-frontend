@@ -9,6 +9,8 @@ import {
 import { useParams, Link } from 'react-router-dom';
 
 const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
+const API_KEY = import.meta.env.VITE_API_KEY;
+
 const ELEMENT_OPTIONS = {
   style: {
     base: {
@@ -54,7 +56,10 @@ const DonationForm = () => {
         try {   
             const res = await fetch(`${API_BASE_URL}/api/clubs/${clubId}/donate`, {
                 method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
+                headers: {
+                    "Content-Type": "application/json",
+                    "Authorization": `Bearer ${API_KEY}`,
+                },
                 body: JSON.stringify(formData),
             });
 

@@ -3,6 +3,7 @@ import { useParams, Link } from 'react-router-dom';
 import DataTable from 'react-data-table-component';
 
 const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
+const API_KEY = import.meta.env.VITE_API_KEY;
 
 const columns = [
   {
@@ -56,7 +57,11 @@ const AboutClub = () => {
   useEffect(() => {
     const fetchClubDetails = async () => {
       try {
-        const response = await fetch(`${API_BASE_URL}/api/clubs/${clubId}`);
+        const response = await fetch(`${API_BASE_URL}/api/clubs/${clubId}`, {
+          headers: {
+            'Authorization': `Bearer ${API_KEY}`,
+          },
+        });
         const data = await response.json();
         setClub(data);
       } catch (error) {
@@ -68,7 +73,11 @@ const AboutClub = () => {
 
     const fetchDonations = async () => {
       try {
-        const res = await fetch(`${API_BASE_URL}/api/clubs/${clubId}/donations`);
+        const res = await fetch(`${API_BASE_URL}/api/clubs/${clubId}/donations`, {
+          headers: {
+            'Authorization': `Bearer ${API_KEY}`,
+          },
+        });
         const data = await res.json();
         setDonations(data.donations || []);
         setTotalAmount(data.totalAmount || 0);
