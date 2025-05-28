@@ -109,7 +109,7 @@ const AboutClub = () => {
       <div className="mt-4">
         <h2 className="text-xl font-semibold mb-1">Donation Summary</h2>
         <p className="mb-1 text-gray-700">Total Donations: <strong>{donationCount}</strong></p>
-        <p className="mb-4 text-gray-700">Total Raised: <strong>${totalAmount}</strong></p>
+        <p className="mb-4 text-gray-700">Total Raised: <strong>${totalAmount.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</strong></p>
       </div>
 
       <DataTable
