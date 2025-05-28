@@ -50,6 +50,21 @@ const DonationForm = () => {
 
         if (!stripe || !elements) return;
 
+        const cardNumberElement = elements.getElement(CardNumberElement);
+        const cardExpiryElement = elements.getElement(CardExpiryElement);
+        const cardCvcElement = elements.getElement(CardCvcElement);
+
+        // Check if card fields are complete
+        if (
+            !cardNumberElement._complete ||
+            !cardExpiryElement._complete ||
+            !cardCvcElement._complete
+        ) {
+            setMessage('Please complete all card details.');
+            setMessageType('error');
+            return;
+        }
+
         setLoading(true);
         setMessage('');
 
@@ -85,18 +100,20 @@ const DonationForm = () => {
 
             if (result.error) {
                 setMessage(result.error.message);
+                setMessageType('error');
             } else if (result.paymentIntent.status === 'succeeded') {
                 setMessage('Donation successful! Thank you.');
                 setFormData({ amount: '', donorFirstName: '', donorLastName: '', donorEmail: '' });
                 setMessageType('success');
 
                 // Clear Stripe fields
-                elements.getElement(CardNumberElement)?.clear();
-                elements.getElement(CardExpiryElement)?.clear();
-                elements.getElement(CardCvcElement)?.clear();
+                cardNumberElement?.clear();
+                cardExpiryElement?.clear();
+                cardCvcElement?.clear();
             }
         } catch (err) {
             setMessage('Something went wrong. Please try again.');
+            setMessageType('error');
         } finally {
             setLoading(false);
         }
